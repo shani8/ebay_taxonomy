@@ -94,11 +94,12 @@ $tokkenDate = $expiration;
             <div class="row justify-content-center pt-2">
             <div class="form-group col-md-4 col-md-offset-4 align-center ">
               <h5>Category ID:</h5>
-               <input type="text" name="cat_id" id="cat_id" placeholder="Category ID" class="form-control" />
+               <input type="text" name="cat_id" id="cat_id" class="form-control" />
             </div>
             </div>
-            <div class="row justify-content-center pt-2">
-            <div class="form-group col-md-4 col-md-offset-5 align-center">
+            <div class="row text-center pt-2">
+            <div class="form-group col-md-4 col-md-offset-4 align-center">
+                <button id="remove_token_btn" class="btn btn-outline-primary">Remove Token</button>
                 <button id="btn" class="btn btn-outline-primary">Fetch Aspects</button>
             </div>
             </div>
@@ -220,6 +221,51 @@ $(document).ready(function() {
                 $("#loading_gif").hide();
                 $("#result").css("color", "green");
                 $("#result").text("Token is generated Successfully..");
+                // $("#generate_token_btn").removeAttr("disabled");
+                location.reload();
+             }
+             else
+             {
+               $("#loading_gif").hide();
+               $("#result").css("color", "red");
+               $("#result").text("Error: Something went wrong..");
+               $("#generate_token_btn").removeAttr("disabled");
+             }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+           // console.log(textStatus, errorThrown);
+             $("#loading_gif").hide();
+             $("#result").css("color", "red");
+             $("#result").text("Error: Something went wrong..");
+             $("#generate_token_btn").removeAttr("disabled");
+             // alert("error"+xhr.status);
+        }
+        });
+
+     });
+
+      $('#remove_token_btn').click(function(event) {
+        event.preventDefault();
+        
+        $('#generate_token_btn').attr("disabled", true);
+        $('#remove_token_btn').attr("disabled", true);
+
+
+        $("#result").text("");
+        $("#loading_gif").show();
+        
+        
+        $.ajax({
+        type:"GET",
+        url: "remove_token.php",
+        success: function (response) {
+           // alert(response);
+            if(response == 1)
+             {
+              
+                $("#loading_gif").hide();
+                $("#result").css("color", "green");
+                $("#result").text("Token is removed Successfully..");
                 // $("#generate_token_btn").removeAttr("disabled");
                 location.reload();
              }
