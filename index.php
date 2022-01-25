@@ -93,6 +93,7 @@ $tokkenDate = $expiration;
 
             <div class="row justify-content-center pt-2">
             <div class="form-group col-md-4 col-md-offset-4 align-center ">
+              <h5>Category ID:</h5>
                <input type="text" name="cat_id" id="cat_id" placeholder="Category ID" class="form-control" />
             </div>
             </div>
