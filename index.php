@@ -4,21 +4,31 @@ $sql = "SELECT * FROM ebay_taxonomy_oauth";
 $result = mysqli_query($conn, $sql);
 $rec = mysqli_fetch_array($result);
 
-$access_token = $rec['access_token'];
-$expiration = $rec['expiration'];
+$access_token = "";
+$expiration = "";
+$dbMode = "";
+$mode = "";
 
-  if($rec['mode'] == 1)
+if(mysqli_num_rows($result) > 0)
   {
-   $mode = "Live";
-  }
-  else
-  {
-   $mode = "SandBox";
-  }
+
+    $access_token = $rec['access_token'];
+    $expiration = $rec['expiration'];
+    $dbMode = $rec['mode'];
+
+      if($dbMode == 1)
+      {
+       $mode = "Live";
+      }
+      else if($dbMode == 0)
+      {
+       $mode = "SandBox";
+      }
+}
 
 $currentDate = date('Y-m-d h:i:s');
 $tokkenDate = $expiration;
-// echo $currentDate;
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,35 +38,15 @@ $tokkenDate = $expiration;
 
         <title>Ebay Taxonomy</title>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
+         <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-        <!-- Font Awesome -->
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-          rel="stylesheet"
-        />
-        <!-- Google Fonts -->
-        <link
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          rel="stylesheet"
-        />
-        <!-- MDB -->
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
-          rel="stylesheet"
-        />
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-        <!-- Styles -->
-        <style>
-            body {
-                font-family: 'Nunito', sans-serif;
-                margin: 40px;
-            }
-        </style>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+
     </head>
     <body class="antialiased">
         <form id="form">
@@ -70,7 +60,8 @@ $tokkenDate = $expiration;
         <!-- <div class="container"> -->
           <div class="container">
            <div class="row justify-content-center pt-2">
-            <div class="form-group col-md-4 col-md-offset-5 align-center ">
+            <div class="form-group col-md-4 col-md-offset-4 align-center ">
+                <h5>Mode:</h5>
                 <select id="urlMode" name="urlMode" class="form-control">
                 <option value="">---Select---</option>  
                 <option value='1'>Live</option>  
@@ -95,18 +86,18 @@ $tokkenDate = $expiration;
         else
         {
         ?>
-        <div style="margin: 05px;color:green;font-size: 16px; font-weight: bold;font-style: italic;" class="d-flex justify-content-center"><span style="color: red; margin-right: 4px">Mode:</span> <?php echo $mode; ?></div>
-        <div style="margin: 05px;color:green;font-size: 16px; font-weight: bold;font-style: italic;" class="d-flex justify-content-center"><span style="color: red; margin-right: 4px">Expiration:</span> <?php echo $expiration; ?></div>
+        <div style="margin: 05px;color:green;font-size: 16px; font-weight: bold;font-style: italic;" class="text-center"><span style="color: red; margin-right: 4px">Mode:</span> <?php echo $mode; ?></div>
+        <div style="margin: 05px;color:green;font-size: 16px; font-weight: bold;font-style: italic;" class="text-center"><span style="color: red; margin-right: 4px">Expiration:</span> <?php echo $expiration; ?></div>
         <!-- <div class="container"> -->
           <div class="container">
 
             <div class="row justify-content-center pt-2">
-            <div class="form-group col-md-4 col-md-offset-5 align-center ">
+            <div class="form-group col-md-4 col-md-offset-4 align-center ">
                <input type="text" name="cat_id" id="cat_id" placeholder="Category ID" class="form-control" />
             </div>
             </div>
             <div class="row justify-content-center pt-2">
-            <div class="form-group col-md-4 col-md-offset-5 align-center ">
+            <div class="form-group col-md-4 col-md-offset-5 align-center">
                 <button id="btn" class="btn btn-outline-primary">Fetch Aspects</button>
             </div>
             </div>
@@ -125,11 +116,11 @@ $tokkenDate = $expiration;
 
         <!-- </div> -->
         
-        <div style="margin: 05px;color:green;font-size: 16px; font-weight: bold;font-style: italic;" class="d-flex justify-content-center" id="result"></div>
+        <div style="margin: 05px;color:green;font-size: 16px; font-weight: bold;font-style: italic;" class="text-center" id="result"></div>
        
-        <div class="d-flex justify-content-center" style="margin:20px 0px">
+        <div class="text-center" style="margin:20px 0px">
           
-          <img src="loading.gif" id="loading_gif" class="h-25 w-25" alt="Loading..">
+          <img src="loading.gif" id="loading_gif" height="200px" width="270px" alt="Loading..">
 
         </div>
 
